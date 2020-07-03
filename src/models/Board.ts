@@ -1,3 +1,4 @@
+import { Rand } from './../helpers/Rand';
 import { TerrainSlot } from './TerrainSlot';
 import { Terrain } from './Terrain';
 
@@ -116,8 +117,14 @@ export class Board {
     }
 
     addTerrain(x: number, y: number, terrain: Terrain) {
+        terrain.bamboos = Rand.integerBetween(0, 5);
+        console.log(terrain.bamboos);
         this.slots[x][y].terrain = terrain;
         this.updateNeighborsOf(x, y);
+    }
+
+    terrain(pos: { x: number; y: number; }): Terrain {
+        return this.slotExists(pos) ? this.s(pos).terrain : null;
     }
 
     private logBoard(pos: { x: number, y: number } = null) {

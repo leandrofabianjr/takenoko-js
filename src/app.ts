@@ -1,3 +1,4 @@
+import { Rand } from './helpers/Rand';
 import { GameController } from './controllers/GameController';
 import app from 'express';
 import http from 'http';
@@ -25,7 +26,21 @@ io.on('connection', (socket) => {
 
     socket.on('board add terrain', (pos) => {
         console.log('board add terrain');
-        game.addTerrain(pos, 'pink');
+        const color = ['green', 'pink', 'yellow'][Rand.integerBetween(0, 3)];
+        const improvement = ['fertilizer', 'watershed', 'enclosure'][Rand.integerBetween(0, 3)];
+        game.addTerrain(pos, color, improvement);
+        io.emit('board', game.board);
+    });
+
+    socket.on('board add bamboo', (pos) => {
+        console.log('board add bamboo');
+        game.addBamboo(pos);
+        io.emit('board', game.board);
+    });
+
+    socket.on('board get bamboo', (pos) => {
+        console.log('board get bamboo');
+        game.getBamboo(pos);
         io.emit('board', game.board);
     });
 
